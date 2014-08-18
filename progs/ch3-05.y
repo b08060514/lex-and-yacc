@@ -11,7 +11,7 @@
 %token <symp> NAME
 %token <dval> NUMBER
 %left '-' '+'
-%left '*' '/'
+%left '*' '/' '%'
 %nonassoc UMINUS
 
 %type <dval> expression
@@ -27,6 +27,12 @@ statement:	NAME '=' expression	{ $1->value = $3; }
 expression:	expression '+' expression { $$ = $1 + $3; }
 	|	expression '-' expression { $$ = $1 - $3; }
 	|	expression '*' expression { $$ = $1 * $3; }
+	|	expression '%' expression 
+	            {   if((int)$3 == 0)
+				        yyerror("moded by zero");
+					else
+						$$ = (int)$1 % (int)$3; 
+				}
 	|	expression '/' expression
 				{	if($3 == 0.0)
 						yyerror("divide by zero");
