@@ -43,6 +43,14 @@ expression:	expression '+' expression { $$ = $1 + $3; }
 	|	'(' expression ')'	{ $$ = $2; }
 	|	NUMBER
 	|	NAME			{ $$ = $1->value; }
+	|	NAME '(' expression ',' expression ')'	{
+			if($1->funcptr)
+				$$ = ($1->funcptr)($3,$5);
+			else {
+				printf("%s not a function\n", $1->name);
+				$$ = 0.0;
+			}
+		}
 	|	NAME '(' expression ')'	{
 			if($1->funcptr)
 				$$ = ($1->funcptr)($3);
@@ -87,10 +95,11 @@ double (*func)();
 
 main()
 {
-	extern double sqrt(), exp(), log();
+	extern double sqrt(), exp(), log(), pow();
 
 	addfunc("sqrt", sqrt);
 	addfunc("exp", exp);
 	addfunc("log", log);
+	addfunc("pow", pow);
 	yyparse();
 }
