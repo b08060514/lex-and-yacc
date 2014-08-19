@@ -42,7 +42,7 @@ struct item {
 /* macros */
 #define SCREEN_SIZE 80
 
-void cfree(char *);	/* free if not null */
+void cfree(void *);	/* free if not null */
 
 /* code */
 
@@ -290,8 +290,8 @@ char *name;
 }
 
 void
-cfree(char *p)
+cfree(void *p) /*Modified: Compile error: conflicting types for ‘cfree’ with stdlib.h" */
 {
 	if(p)
-		free(p);
+		free((char *)p);
 }
