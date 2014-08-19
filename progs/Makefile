@@ -3,9 +3,11 @@
 # make and run all the example programs for
 # lex & yacc, Second Edition
 CC = gcc -g
-LIBS = -ly -ll
-LEX = flex
-YACC = yacc
+# Must for link libl.a, or here will be error:"bison-3.0/lib/main.c:29：对‘yyparse’未定义的引用" on Ubuntu enviroment.
+LIBS = -ll -ly
+#here i use AT&T lex
+LEX = lex
+YACC = yacc -d
 CFLAGS = -DYYDEBUG=1
 
 PROGRAMS1 = ch1-01.pgm ch1-02.pgm ch1-03.pgm ch1-04.pgm ch1-05.pgm ch1-06.pgm
